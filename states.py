@@ -41,12 +41,5 @@ class BusState(State):
                 (other.junctionIdx, other.waitingOrders, other.ordersOnBus))
 
     def isGoal(self):
-        # TODO : Implement
-        endPointOfOrder = False
-
-        for order in self.finishedOrders:
-            if (order[1] == self.junctionIdx):
-                endPointOfOrder = True
-                break
-
-        return (not self.waitingOrders) and (not self.ordersOnBus) and endPointOfOrder
+        return (not self.waitingOrders) and (not self.ordersOnBus) and \
+               (list(filter(lambda x: x == self.junctionIdx, self.finishedOrders)))
