@@ -42,4 +42,11 @@ class BusState(State):
 
     def isGoal(self):
         # TODO : Implement
-        raise NotImplementedError
+        endPointOfOrder = False
+
+        for order in self.finishedOrders:
+            if (order[1] == self.junctionIdx):
+                endPointOfOrder = True
+                break
+
+        return (not self.waitingOrders) and (not self.ordersOnBus) and endPointOfOrder
