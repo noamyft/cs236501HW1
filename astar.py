@@ -56,15 +56,51 @@ class AStar:
         # - To get the successor states of a state with their costs, use: problem.expandWithCosts(state, self.cost)
         # - You should break your code into methods (two such stubs are written below)
         # - Don't forget to cache your result between returning it - TODO
-
-        # TODO : VERY IMPORTANT: must return a tuple of (path, g_score(goal), h(I), developed)
-        return ([], -1, -1, developed)
+        while open_set:
+            next = self._getOpenStateWithLowest_f_score(open_set)
+            closed_set.add(next)
+            del open_set[next]
+            developed += 1
+            #check if we reached the goal
+            if problem.isGoal(next):
+                return (self._reconstructPath(parents,next), g_score[next],
+                        self.heuristic.estimate(problem, problem.initialState), developed)
+            for (s,costEdge) in problem.expandWithCosts(next,self.cost):
+                new_g = g_score[next] + costEdge
+                if s in open_set:
+                    if g_score[s] > new_g:
+                        open_set[s] = open_set[s] - g_score[s] + new_g
+                        g_score[s] = new_g
+                        parents[s] = next
+                elif s in closed_set:
+                    if g_score[s] > new_g:
+                        g_score[s] = new_g
+                        parents[s] = next
+                        closed_set.discard(s)
+                        open_set[s] = new_g + self.heuristic.estimate(problem, s)
+                else:
+                    g_score[s] = new_g
+                    parents[s] = next
+                    open_set[s] = new_g + self.heuristic.estimate(problem, s)
+            # TODO : VERY IMPORTANT: must return a tuple of (path, g_score(goal), h(I), developed)
+        raise Exception("No path to goal!!!")
 
     def _getOpenStateWithLowest_f_score(self, open_set):
-        # TODO : Implement
-        raise NotImplementedError
+        min = None
+        for (key,value) in open_set.items():
+            if min is None:
+                min = (key,value)
+            else:
+                min = (key,value) if value < min[1] else min
+        return min[0]
+
+
 
     # Reconstruct the path from a given goal by its parent and so on
     def _reconstructPath(self, parents, goal):
-        # TODO : Implement
-        raise NotImplementedError
+        res = [goal]
+        current = goal
+        while current in parents:
+            res.insert(0,parents[current])
+            current = parents[current]
+        return res

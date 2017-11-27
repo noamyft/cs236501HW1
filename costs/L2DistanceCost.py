@@ -1,4 +1,6 @@
 from . import Cost
+from ways import tools, compute_distance
+
 
 class L2DistanceCost(Cost):
     roads = None
@@ -10,6 +12,4 @@ class L2DistanceCost(Cost):
     def compute(self, fromState, toState):
         coord1 = self.roads[fromState.junctionIdx].coordinates
         coord2 = self.roads[toState.junctionIdx].coordinates
-
-        # TODO : Return the correct value (call the suitable function from ways.tools)
-        raise NotImplementedError
+        return compute_distance(coord1,coord2)
