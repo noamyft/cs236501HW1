@@ -1,3 +1,5 @@
+
+
 from . import GreedySolver
 import numpy as np
 
@@ -21,11 +23,20 @@ class GreedyStochasticSolver(GreedySolver):
         P = np.zeros((len(successors),))
 
         # TODO: Fill the distribution in P as explained in the instructions.
+        XNorm = X / np.min(X)
+        XBestNIndices = XNorm.argsort()[:self._N]
+
+        sumDenom = np.sum(XNorm[XBestNIndices] ** (-1 / self.T))
+        P[XBestNIndices] = (XNorm[XBestNIndices] ** (-1 / self.T)) / sumDenom
+
+        # for index in XBestNIndices:
+        #     P[index] = (XNorm[index] ** (-1/self.T) / sumDenom)
+        #     P[XBestNIndices] = (XNorm[XBestNIndices] ** (-1 / self.T) / sumDenom)
         # TODO : No changes in the rest of the code are needed
-        raise NotImplementedError
+
 
         # Update the temperature
-        self.T *= self._TEMERATURE_DECAY_FACTOR
+        self.T *= self._TEMPERATURE_DECAY_FACTOR
 
         return P
 
@@ -36,9 +47,8 @@ class GreedyStochasticSolver(GreedySolver):
 
         # TODO : Choose the next state stochastically according to the calculated distribution.
         # You should look for a suitable function in numpy.random.
-        nextIdx = None
-
-        return successors[nextIdx]
+        #nextIdx = None
+        return np.random.choice(successors, 1, p=P)[0]
 
     # Override the base solve method to initialize the temperature
     def solve(self, initialState):

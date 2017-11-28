@@ -1,3 +1,5 @@
+from sympy.strategies.tree import greedy
+
 from consts import Consts
 from astar import AStar
 from ways import load_map_from_csv
@@ -7,7 +9,7 @@ from costs import L2DistanceCost
 from heuristics import L2DistanceHeuristic
 import numpy as np
 
-REPEATS = 150
+REPEATS = 5
 
 # Load the files
 roads = load_map_from_csv(Consts.getDataFilePath("israel.csv"))
@@ -37,8 +39,11 @@ print("\nDone!")
 
 # TODO : Part1 - Plot the diagram required in the instructions
 from matplotlib import pyplot as plt
-raise NotImplementedError
+
+plt.axhline(y=greedyDistance)
+plt.plot(range(1, REPEATS+1), results)
+plt.show()
 
 
 # TODO : Part2 - Remove the exit and perform the t-test
-raise NotImplementedError
+# raise NotImplementedError
