@@ -42,4 +42,4 @@ class BusState(State):
 
     def isGoal(self):
         return (not self.waitingOrders) and (not self.ordersOnBus) and \
-               (list(filter(lambda x: x == self.junctionIdx, self.finishedOrders)))
+               (list(filter(lambda x: x[1] == self.junctionIdx, self.finishedOrders)))
