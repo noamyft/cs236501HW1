@@ -63,26 +63,33 @@ class AStar:
             developed += 1
             #check if we reached the goal
             if problem.isGoal(next):
-                return (self._reconstructPath(parents,next), g_score[next],
+                res = (self._reconstructPath(parents,next), g_score[next],
                         self.heuristic.estimate(problem, problem.initialState), developed)
+                self._storeInCache(problem,res)
+                return res
+            # loop over sons
             for (s,costEdge) in problem.expandWithCosts(next,self.cost):
                 new_g = g_score[next] + costEdge
+                # we all ready created the node
                 if s in open_set:
+                    # new g is better that the one we have
                     if g_score[s] > new_g:
                         open_set[s] = open_set[s] - g_score[s] + new_g
                         g_score[s] = new_g
                         parents[s] = next
+                # we all ready developed this node
                 elif s in closed_set:
+                    # new g is better that the one we have
                     if g_score[s] > new_g:
                         g_score[s] = new_g
                         parents[s] = next
                         closed_set.discard(s)
                         open_set[s] = new_g + self.heuristic.estimate(problem, s)
+                # first time we encounter this node
                 else:
                     g_score[s] = new_g
                     parents[s] = next
                     open_set[s] = new_g + self.heuristic.estimate(problem, s)
-            # TODO : VERY IMPORTANT: must return a tuple of (path, g_score(goal), h(I), developed)
         raise Exception("No path to goal!!!")
 
     def _getOpenStateWithLowest_f_score(self, open_set):
