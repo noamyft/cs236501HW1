@@ -9,7 +9,7 @@ from costs import L2DistanceCost
 from heuristics import L2DistanceHeuristic
 import numpy as np
 
-REPEATS = 5
+REPEATS = 150
 
 # Load the files
 roads = load_map_from_csv(Consts.getDataFilePath("israel.csv"))
@@ -39,6 +39,10 @@ print("\nDone!")
 
 # TODO : Part1 - Plot the diagram required in the instructions
 from matplotlib import pyplot as plt
+
+for i in range(1,len(results)):
+    if results[i] > results[i-1]:
+        results[i] = results[i-1]
 
 plt.axhline(y=greedyDistance)
 plt.plot(range(1, REPEATS+1), results)
