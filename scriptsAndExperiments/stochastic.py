@@ -40,14 +40,25 @@ print("\nDone!")
 # TODO : Part1 - Plot the diagram required in the instructions
 from matplotlib import pyplot as plt
 
-for i in range(1,len(results)):
-    if results[i] > results[i-1]:
-        results[i] = results[i-1]
+monotonicResults = results
+
+for i in range(1,len(monotonicResults)):
+    if monotonicResults[i] > monotonicResults[i-1]:
+        monotonicResults[i] = monotonicResults[i-1]
 
 plt.axhline(y=greedyDistance)
-plt.plot(range(1, REPEATS+1), results)
+plt.plot(range(1, REPEATS+1), monotonicResults)
 plt.show()
 
 
 # TODO : Part2 - Remove the exit and perform the t-test
-# raise NotImplementedError
+from scipy import stats as spstats
+
+stochasticMean = np.mean(results)
+stochasticStd = np.std(results)
+
+print("statistic results of greedy stochastic: Mean: {} Standard Deviation: {}".format(stochasticMean,stochasticStd))
+
+_, pValue = spstats.ttest_1samp(results, greedyDistance)
+
+print("pValue of Ttest: {}".format(pValue))
