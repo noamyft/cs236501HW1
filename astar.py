@@ -70,11 +70,12 @@ class AStar:
             # loop over sons
             for (s,costEdge) in problem.expandWithCosts(next,self.cost):
                 new_g = g_score[next] + costEdge
+                newScore = new_g + self.heuristic.estimate(problem, s)
                 # we all ready created the node
                 if s in open_set:
                     # new g is better that the one we have
                     if g_score[s] > new_g:
-                        open_set[s] = open_set[s] - g_score[s] + new_g
+                        open_set[s] = newScore
                         g_score[s] = new_g
                         parents[s] = next
                 # we all ready developed this node
@@ -84,12 +85,12 @@ class AStar:
                         g_score[s] = new_g
                         parents[s] = next
                         closed_set.discard(s)
-                        open_set[s] = new_g + self.heuristic.estimate(problem, s)
+                        open_set[s] = newScore
                 # first time we encounter this node
                 else:
                     g_score[s] = new_g
                     parents[s] = next
-                    open_set[s] = new_g + self.heuristic.estimate(problem, s)
+                    open_set[s] = newScore
         raise Exception("No path to goal!!!")
 
     def _getOpenStateWithLowest_f_score(self, open_set):
