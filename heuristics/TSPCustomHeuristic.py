@@ -1,4 +1,6 @@
 from heuristics import Heuristic
+from ways import tools, compute_distance
+
 
 # TODO : Implement as explained in the instructions
 class TSPCustomHeuristic(Heuristic):
@@ -7,8 +9,16 @@ class TSPCustomHeuristic(Heuristic):
 
     # TODO : You can add parameters if you need them
     def __init__(self, roads, initialState):
-        super().__init__()
+        self.roads = roads
+        self.initialState = initialState
 
     # Estimate heuristically the minimal cost from the given state to the problem's goal
+    # Using d heuristic from instructions
     def estimate(self, problem, state):
-        raise NotImplementedError
+        maxDistance = 0
+        coord = self.roads[state.junctionIdx].coordinates
+        for order1 in state.waitingOrders:
+            coord1 = self.roads[order1[0]].coordinates  # coordination of si
+            curr = compute_distance(coord1, coord)     # distance between current state and si
+            maxDistance = max(curr,maxDistance)
+        return maxDistance
