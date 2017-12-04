@@ -14,24 +14,24 @@ prob = BusProblem.load(Consts.getDataFilePath("TLV_5.in"))
 
 mapAstar = AStar(L2DistanceHeuristic(), shouldCache=True)
 
-# ############ Greedy solver ############
-#
-# greedyPickingPath = GreedyBestFirstSolver(roads, mapAstar, L2DistanceCost(roads)).solve(prob)
-# print("Greedy result: {:.2f}km".format(greedyPickingPath.getDistance() / 1000))
-#
-#
-# ############ Stochastic solver ############
-#
-# scorer = L2DistanceCost(roads)
-# solver = GreedyStochasticSolver(roads, mapAstar, scorer,
-#                                 Consts.STOCH_INITIAL_TEMPERATURE,
-#                                 Consts.STOCH_TEMPERATURE_DECAY_FUNCTION,
-#                                 Consts.STOCH_TOP_SCORES_TO_CONSIDER)
-#
-# REPEATS = 200
-# results = [solver.solve(prob).getDistance() / 1000 for _ in range(REPEATS)]
-#
-# print("Stochastic ({} repetitions): {}km".format(REPEATS, min(results)))
+############ Greedy solver ############
+
+greedyPickingPath = GreedyBestFirstSolver(roads, mapAstar, L2DistanceCost(roads)).solve(prob)
+print("Greedy result: {:.2f}km".format(greedyPickingPath.getDistance() / 1000))
+
+
+############ Stochastic solver ############
+
+scorer = L2DistanceCost(roads)
+solver = GreedyStochasticSolver(roads, mapAstar, scorer,
+                                Consts.STOCH_INITIAL_TEMPERATURE,
+                                Consts.STOCH_TEMPERATURE_DECAY_FUNCTION,
+                                Consts.STOCH_TOP_SCORES_TO_CONSIDER)
+
+REPEATS = 200
+results = [solver.solve(prob).getDistance() / 1000 for _ in range(REPEATS)]
+
+print("Stochastic ({} repetitions): {}km".format(REPEATS, min(results)))
 
 
 ############ A* solver ############
@@ -45,7 +45,7 @@ print("A* (null heuristic):\tg(G)={:.2f}km, h(I)={:.2f}km, developed: {} states"
 # exit()
 
 # Run A* with the custom heuristic
-customH = TSPCustomHeuristic(roads, prob.initialState, L2DistanceCost(roads))
+customH = TSPCustomHeuristic(roads, prob.initialState)
 busAstar = AStar(customH, cost=ActualDistanceCost(roads, mapAstar))
 _,gBus,hVal,developed = busAstar.run(prob)
 print("A* (Custom heuristic):\tg(G)={:.2f}km, h(I)={:.2f}km, developed: {} states".format(gBus/1000, hVal/1000, developed))
