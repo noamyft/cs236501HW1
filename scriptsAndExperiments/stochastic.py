@@ -40,14 +40,20 @@ print("\nDone!")
 # TODO : Part1 - Plot the diagram required in the instructions
 from matplotlib import pyplot as plt
 
-monotonicResults = results
+monotonicResults = [0] * len(results)
+monotonicResults[0] = results[0]
 
-for i in range(1,len(monotonicResults)):
-    if monotonicResults[i] > monotonicResults[i-1]:
-        monotonicResults[i] = monotonicResults[i-1]
+for i in range(1,len(results)):
+    if results[i] < monotonicResults[i-1]:
+        monotonicResults[i] = results[i]
+    else:
+        monotonicResults[i] = monotonicResults[i - 1]
 
-plt.axhline(y=greedyDistance)
-plt.plot(range(1, REPEATS+1), monotonicResults)
+plt.plot(range(1, REPEATS+1), [greedyDistance] * REPEATS, label="deterministic greedy")
+plt.plot(range(1, REPEATS+1), monotonicResults, label="stochastic greedy")
+plt.title("Comparison of deterministic greedy vs. stochastic greedy")
+plt.xlabel("# Iteration")
+plt.legend(bbox_to_anchor=(1, 1))
 plt.show()
 
 
