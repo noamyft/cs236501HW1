@@ -47,7 +47,7 @@ class GreedyStochasticSolver(GreedySolver):
 
         # TODO : Choose the next state stochastically according to the calculated distribution.
         # You should look for a suitable function in numpy.random.
-        #nextIdx = None
+        # choose a successor randomly with the probability from the instructions
         return np.random.choice(successors, 1, p=P)[0]
 
     # Override the base solve method to initialize the temperature

@@ -44,7 +44,7 @@ print("A* (null heuristic):\tg(G)={:.2f}km, h(I)={:.2f}km, developed: {} states"
 # TODO : Remove exit() and re-run
 # exit()
 
-# Run A* with the custom heuristic
+# Run A* with the custom heuristic using heuristic d from instructions
 customH = TSPCustomHeuristic(roads, prob.initialState)
 busAstar = AStar(customH, cost=ActualDistanceCost(roads, mapAstar))
 _,gBus,hVal,developed = busAstar.run(prob)
@@ -54,7 +54,4 @@ print("A* (Custom heuristic):\tg(G)={:.2f}km, h(I)={:.2f}km, developed: {} state
 # exit()
 
 # Run A* with the MST heuristic
-tspH = MSTHeuristic(roads, prob.initialState, ActualDistanceCost(roads, mapAstar))
-busAstar = AStar(tspH, cost=ActualDistanceCost(roads, mapAstar))
-_,gBus,hVal,developed = busAstar.run(prob)
-print("A* (MST heuristic):\tg(G)={:.2f}km, h(I)={:.2f}km, developed: {} states".format(gBus/1000, hVal/1000, developed))
+tspH = MST("MST heuristic):\tg(G)={:.2f}km, h(I)={:.2f}km, developed: {} states".format(gBus/1000, hVal/1000, developed))

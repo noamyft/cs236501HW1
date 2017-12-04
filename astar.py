@@ -60,14 +60,14 @@ class AStar:
             next = self._getOpenStateWithLowest_f_score(open_set)
             closed_set.add(next)
             del open_set[next]
-            developed += 1
-            #check if we reached the goal
+            developed += 1 # count next as a developed node
+            #  check if we reached the goal
             if problem.isGoal(next):
                 res = (self._reconstructPath(parents,next), g_score[next],
                         self.heuristic.estimate(problem, problem.initialState), developed)
                 self._storeInCache(problem,res)
                 return res
-            # loop over sons
+            # loop over sons of next
             for (s,costEdge) in problem.expandWithCosts(next,self.cost):
                 new_g = g_score[next] + costEdge
                 newScore = new_g + self.heuristic.estimate(problem, s)
